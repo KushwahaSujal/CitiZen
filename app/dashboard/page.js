@@ -1,6 +1,28 @@
 "use client"
+import { useState, useEffect } from "react"
 
 export default function DashboardPage() {
+  const [user, setUser] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    // Check if user is logged in
+    if (typeof window !== 'undefined') {
+      const authToken = localStorage.getItem('authToken')
+      const userData = localStorage.getItem('user')
+      
+      if (authToken && userData) {
+        try {
+          const parsedUser = JSON.parse(userData)
+          setUser(parsedUser)
+          setIsLoggedIn(true)
+        } catch (error) {
+          console.error('Error parsing user data:', error)
+        }
+      }
+    }
+  }, [])
+
   return (
     <main className="w-full">
       <section className="overflow-hidden shadow-lg">
@@ -17,6 +39,15 @@ export default function DashboardPage() {
           {/* Redesigned text overlay with better hierarchy */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center max-w-4xl px-6 md:px-12">
+              {/* Personal greeting if logged in */}
+              {isLoggedIn && user && (
+                <div className="mb-4">
+                  <h1 className="text-2xl md:text-3xl font-bold text-white/90 drop-shadow-lg">
+                    Hi! {user.fullName ? user.fullName.split(' ')[0] : 'User'} 👋
+                  </h1>
+                </div>
+              )}
+
               {/* Main headline with enhanced styling and icon */}
               <div className="mb-6">
                 <div className="flex items-center justify-center gap-2 mb-2">

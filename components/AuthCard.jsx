@@ -1,18 +1,77 @@
 "use client"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function AuthCard() {
   const [mode, setMode] = useState("signup") // 'signup' or 'login'
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+
+  const handleSignup = async (e) => {
+    e.preventDefault()
+    setIsLoading(true)
+    
+    const fd = new FormData(e.currentTarget)
+    const userData = Object.fromEntries(fd.entries())
+    
+    // Store user data in localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('authToken', 'demo-token-' + Date.now())
+      localStorage.setItem('user', JSON.stringify({
+        id: Date.now(),
+        fullName: userData.fullName,
+        email: userData.email,
+        phone: userData.phone,
+        ward: userData.ward,
+        pincode: userData.pincode,
+        municipality: userData.municipality,
+        createdAt: new Date().toISOString(),
+        isLoggedIn: true
+      }))
+    }
+    
+    // Simulate API call delay
+    setTimeout(() => {
+      setIsLoading(false)
+      alert(`Welcome ${userData.fullName}! Account created successfully.`)
+      router.push('/') // Redirect to home page
+    }, 1000)
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setIsLoading(true)
+    
+    const fd = new FormData(e.currentTarget)
+    const loginData = Object.fromEntries(fd.entries())
+    
+    // For demo purposes, create a user profile for login
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('authToken', 'demo-token-' + Date.now())
+      localStorage.setItem('user', JSON.stringify({
+        id: Date.now(),
+        fullName: 'Demo User', // Default name for login
+        email: loginData.emailOrPhone,
+        phone: loginData.emailOrPhone.includes('@') ? '' : loginData.emailOrPhone,
+        ward: 'Ward 1',
+        pincode: '110001',
+        municipality: 'Demo City',
+        lastLogin: new Date().toISOString(),
+        isLoggedIn: true
+      }))
+    }
+    
+    // Simulate API call delay
+    setTimeout(() => {
+      setIsLoading(false)
+      alert('Welcome back! Logged in successfully.')
+      router.push('/') // Redirect to home page
+    }, 1000)
+  }
 
   const SignupForm = (
     <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        const fd = new FormData(e.currentTarget)
-        const obj = Object.fromEntries(fd.entries())
-        console.log("signup", obj)
-        alert("Create account clicked (demo). Check console for form values.")
-      }}
+      onSubmit={handleSignup}
       className="space-y-4"
     >
       <h3 className="text-2xl font-bold text-black text-center">Create Account</h3>
@@ -30,18 +89,19 @@ export default function AuthCard() {
         <input name="password" type="password" required placeholder="Password" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
       </div>
 
-      <button type="submit" className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-sky-400 to-teal-500 shadow">Create account</button>
+      <button 
+        type="submit" 
+        disabled={isLoading}
+        className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-sky-400 to-teal-500 shadow disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isLoading ? 'Creating Account...' : 'Create account'}
+      </button>
     </form>
   )
 
   const LoginForm = (
     <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        const fd = new FormData(e.currentTarget)
-        console.log("login", Object.fromEntries(fd.entries()))
-        alert("Sign in clicked (demo). Check console for form values.")
-      }}
+      onSubmit={handleLogin}
       className="space-y-4"
     >
       <h3 className="text-2xl font-bold text-black text-center">Welcome back</h3>
@@ -52,7 +112,13 @@ export default function AuthCard() {
         <input name="password" type="password" placeholder="Password" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
       </div>
 
-      <button type="submit" className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-sky-400 to-teal-500 shadow">Sign in</button>
+      <button 
+        type="submit" 
+        disabled={isLoading}
+        className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-sky-400 to-teal-500 shadow disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isLoading ? 'Signing in...' : 'Sign in'}
+      </button>
     </form>
   )
 

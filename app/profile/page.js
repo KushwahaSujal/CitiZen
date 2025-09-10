@@ -1,9 +1,46 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('overview')
   const [isEditing, setIsEditing] = useState(false)
+  const [user, setUser] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if user is logged in
+    if (typeof window !== 'undefined') {
+      const authToken = localStorage.getItem('authToken')
+      const userData = localStorage.getItem('user')
+      
+      if (authToken && userData) {
+        try {
+          const parsedUser = JSON.parse(userData)
+          setUser(parsedUser)
+          setIsLoggedIn(true)
+        } catch (error) {
+          console.error('Error parsing user data:', error)
+          router.push('/auth')
+        }
+      } else {
+        // Redirect to auth if not logged in
+        router.push('/auth')
+      }
+    }
+  }, [router])
+
+  if (!isLoggedIn || !user) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-sky-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading profile...</p>
+        </div>
+      </div>
+    )
+  }
 
   const userStats = {
     reportsSubmitted: 27,
@@ -87,7 +124,7 @@ export default function ProfilePage() {
                 </div>
                 
                 <h1 className="text-3xl md:text-4xl font-black text-white mb-2">
-                  Alex Johnson
+                  {user.fullName || 'CitiZen User'}
                 </h1>
                 <p className="text-xl text-white/90 mb-4">
                   🏆 {userStats.communityRank}
@@ -96,11 +133,11 @@ export default function ProfilePage() {
                 <div className="flex items-center justify-center lg:justify-start gap-4 text-white/80">
                   <div className="flex items-center gap-1">
                     <span>📍</span>
-                    <span>Downtown District</span>
+                    <span>{user.municipality || 'Unknown'}, Ward {user.ward || 'N/A'}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span>📅</span>
-                    <span>Joined March 2024</span>
+                    <span>Joined {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently'}</span>
                   </div>
                 </div>
               </div>
@@ -353,7 +390,7 @@ export default function ProfilePage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                       <input 
                         type="text" 
-                        defaultValue="Alex Johnson"
+                        defaultValue={user.fullName || ''}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0"
                         disabled={!isEditing}
                       />
@@ -362,16 +399,43 @@ export default function ProfilePage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                       <input 
                         type="email" 
-                        defaultValue="alex.johnson@email.com"
+                        defaultValue={user.email || ''}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0"
                         disabled={!isEditing}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                       <input 
                         type="text" 
-                        defaultValue="Downtown District"
+                        defaultValue={user.phone || ''}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0"
+                        disabled={!isEditing}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Ward Number</label>
+                      <input 
+                        type="text" 
+                        defaultValue={user.ward || ''}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0"
+                        disabled={!isEditing}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Pincode</label>
+                      <input 
+                        type="text" 
+                        defaultValue={user.pincode || ''}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0"
+                        disabled={!isEditing}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Municipality</label>
+                      <input 
+                        type="text" 
+                        defaultValue={user.municipality || ''}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0"
                         disabled={!isEditing}
                       />
