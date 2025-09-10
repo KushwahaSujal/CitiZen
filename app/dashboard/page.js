@@ -41,9 +41,9 @@ export default function DashboardPage() {
             <div className="text-center max-w-4xl px-6 md:px-12">
               {/* Personal greeting if logged in */}
               {isLoggedIn && user && (
-                <div className="mb-4">
-                  <h1 className="text-2xl md:text-3xl font-bold text-white/90 drop-shadow-lg">
-                    Hi! {user.fullName ? user.fullName.split(' ')[0] : 'User'} 👋
+                <div className="mb-6 flex justify-end pr-8 md:pr-16">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white drop-shadow-2xl tracking-wide">
+                    Hi! <span className="bg-gradient-to-r from-sky-300 to-teal-300 bg-clip-text text-transparent">{user.fullName ? user.fullName.split(' ')[0] : 'User'}</span> 👋
                   </h1>
                 </div>
               )}
