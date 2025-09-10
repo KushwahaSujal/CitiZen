@@ -3,9 +3,9 @@
   "builds": [
     { "src": "next.config.js", "use": "@vercel/next" }
   ],
-  "routes": [
-    { "src": "/index-backup/?", "status": 308, "dest": "/" },
-    { "src": "/legacy-index/?", "status": 308, "dest": "/" }
+  "redirects": [
+    { "source": "/index-backup", "destination": "/", "statusCode": 308 },
+    { "source": "/legacy-index", "destination": "/", "statusCode": 308 }
   ],
   "headers": [
     {
