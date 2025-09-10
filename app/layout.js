@@ -3,6 +3,7 @@ import Providers from '../components/Providers'
 import SiteHeader from '../components/SiteHeader'
 import SiteFooter from '../components/SiteFooter'
 import SWRegister from '../components/SWRegister'
+import InstallPrompt from '../components/InstallPrompt'
 
 export const metadata = {
   title: 'CitiZen',
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
           <main className="min-h-[70vh] w-full">{children}</main>
           <SiteFooter />
           <SWRegister />
+          <InstallPrompt />
         </Providers>
       </body>
     </html>
