@@ -258,127 +258,311 @@ export default function IssuesPage() {
 
             {/* Issues Display */}
             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 lg:p-8">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold text-gray-800">
-                  {filteredIssues.length} Issues Found
-                </h3>
+              {/* Enhanced Header with Stats */}
+              <div className="mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                  <div>
+                    <h3 className="text-2xl lg:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-teal-400">
+                      {filteredIssues.length} Issues Found
+                    </h3>
+                    <p className="text-gray-600 text-sm mt-1">
+                      Showing results for "{activeFilter === 'all' ? 'all categories' : activeFilter.replace('-', ' ')}"
+                      {searchQuery && ` matching "${searchQuery}"`}
+                    </p>
+                  </div>
+                  
+                  {/* Quick Stats */}
+                  <div className="flex gap-3">
+                    <div className="text-center p-2 bg-red-50 rounded-lg border border-red-200">
+                      <div className="text-sm font-bold text-red-600">
+                        {filteredIssues.filter(i => i.status === 'urgent').length}
+                      </div>
+                      <div className="text-xs text-red-700">Urgent</div>
+                    </div>
+                    <div className="text-center p-2 bg-orange-50 rounded-lg border border-orange-200">
+                      <div className="text-sm font-bold text-orange-600">
+                        {filteredIssues.filter(i => i.status === 'in-progress').length}
+                      </div>
+                      <div className="text-xs text-orange-700">Active</div>
+                    </div>
+                    <div className="text-center p-2 bg-green-50 rounded-lg border border-green-200">
+                      <div className="text-sm font-bold text-green-600">
+                        {filteredIssues.filter(i => i.status === 'resolved').length}
+                      </div>
+                      <div className="text-xs text-green-700">Resolved</div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Sorting Options */}
+                <div className="flex flex-wrap gap-2 items-center">
+                  <span className="text-sm font-medium text-gray-600">Sort by:</span>
+                  <button className="px-3 py-1 bg-sky-50 text-sky-600 rounded-lg text-sm font-medium border border-sky-200 hover:bg-sky-100 transition-colors">
+                    📅 Newest First
+                  </button>
+                  <button className="px-3 py-1 bg-gray-50 text-gray-600 rounded-lg text-sm font-medium border border-gray-200 hover:bg-gray-100 transition-colors">
+                    👍 Most Voted
+                  </button>
+                  <button className="px-3 py-1 bg-gray-50 text-gray-600 rounded-lg text-sm font-medium border border-gray-200 hover:bg-gray-100 transition-colors">
+                    🚨 Priority
+                  </button>
+                </div>
               </div>
 
               {viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {filteredIssues.map((issue) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {filteredIssues.map((issue, index) => (
                     <div
                       key={issue.id}
-                      className="group bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:shadow-lg hover:border-gray-300 transition-all"
+                      className="group relative bg-gradient-to-br from-white via-gray-50/30 to-white rounded-2xl p-6 border border-gray-200 hover:shadow-2xl hover:border-sky-200 transition-all duration-500 transform hover:-translate-y-2"
+                      style={{ animationDelay: `${index * 100}ms` }}
                     >
-                      {/* Header */}
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex-1">
-                          <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-sky-600 transition-colors">
-                            {issue.title}
-                          </h4>
-                          <div className="flex gap-2 mb-2">
-                            <span className={`px-2 py-1 rounded-lg text-xs font-semibold border ${getPriorityColor(issue.priority)}`}>
-                              {issue.priority.toUpperCase()}
-                            </span>
-                            <span className={`px-2 py-1 rounded-lg text-xs font-bold text-white ${
-                              issue.statusColor === 'red' ? 'bg-red-500' :
-                              issue.statusColor === 'orange' ? 'bg-orange-500' :
-                              issue.statusColor === 'green' ? 'bg-green-500' :
-                              issue.statusColor === 'purple' ? 'bg-purple-500' : 'bg-blue-500'
-                            }`}>
-                              {getStatusIcon(issue.status)} {issue.status.replace('-', ' ').toUpperCase()}
-                            </span>
-                          </div>
+                      {/* Priority Indicator */}
+                      <div className={`absolute top-4 right-4 w-3 h-3 rounded-full ${
+                        issue.priority === 'high' ? 'bg-red-400' :
+                        issue.priority === 'medium' ? 'bg-yellow-400' : 'bg-green-400'
+                      } shadow-lg`}></div>
+                      
+                      {/* Issue Number Badge */}
+                      <div className="absolute top-4 left-4 px-2 py-1 bg-gradient-to-r from-sky-100 to-blue-100 rounded-lg">
+                        <span className="text-xs font-bold text-sky-700">#{issue.id}</span>
+                      </div>
+
+                      {/* Header Section */}
+                      <div className="mt-8 mb-4">
+                        <h4 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-sky-600 transition-colors leading-tight line-clamp-2">
+                          {issue.title}
+                        </h4>
+                        
+                        {/* Status and Priority Badges */}
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white shadow-md ${
+                            issue.statusColor === 'red' ? 'bg-gradient-to-r from-red-500 to-red-600' :
+                            issue.statusColor === 'orange' ? 'bg-gradient-to-r from-orange-500 to-amber-500' :
+                            issue.statusColor === 'green' ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
+                            issue.statusColor === 'purple' ? 'bg-gradient-to-r from-purple-500 to-violet-500' : 
+                            'bg-gradient-to-r from-blue-500 to-sky-500'
+                          }`}>
+                            <span>{getStatusIcon(issue.status)}</span>
+                            <span>{issue.status.replace('-', ' ').toUpperCase()}</span>
+                          </span>
+                          
+                          <span className={`px-3 py-1 rounded-full text-xs font-semibold border-2 ${getPriorityColor(issue.priority)}`}>
+                            {issue.priority.toUpperCase()} PRIORITY
+                          </span>
+                        </div>
+
+                        {/* Category Badge */}
+                        <div className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full border border-gray-200 mb-4">
+                          <span className="text-xs">🏷️</span>
+                          <span className="text-xs font-medium text-gray-700">{issue.category}</span>
                         </div>
                       </div>
 
                       {/* Description */}
-                      <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
                         {issue.description}
                       </p>
 
-                      {/* Meta Info */}
-                      <div className="space-y-2 mb-4 text-xs text-gray-500">
-                        <div className="flex items-center gap-2">
-                          <span>📍</span>
-                          <span>{issue.location}</span>
+                      {/* Location and Reporter Info */}
+                      <div className="space-y-2 mb-6">
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <span className="flex items-center justify-center w-6 h-6 bg-sky-100 rounded-full">📍</span>
+                          <span className="font-medium">{issue.location}</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span>🏷️</span>
-                          <span>{issue.category}</span>
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <span className="flex items-center justify-center w-6 h-6 bg-purple-100 rounded-full">👤</span>
+                          <span>Reported by <strong>{issue.reporter}</strong></span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span>👤</span>
-                          <span>By {issue.reporter} • {issue.reportedDate}</span>
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <span className="flex items-center justify-center w-6 h-6 bg-orange-100 rounded-full">�</span>
+                          <span>{new Date(issue.reportedDate).toLocaleDateString()}</span>
                         </div>
                       </div>
 
-                      {/* Actions */}
+                      {/* Action Buttons */}
                       <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                        {/* Upvote Button */}
                         <button 
                           onClick={() => handleUpvote(issue.id)}
-                          className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-colors font-medium text-sm"
+                          className="group/btn flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sky-50 to-blue-50 text-sky-600 border border-sky-200 rounded-xl hover:from-sky-100 hover:to-blue-100 hover:shadow-md transition-all duration-300 font-medium text-sm"
                         >
-                          <span>👍</span>
-                          <span>{issue.upvotes}</span>
+                          <span className="text-lg group-hover/btn:scale-110 transition-transform">👍</span>
+                          <span className="font-bold">{issue.upvotes}</span>
+                          <span className="text-xs">votes</span>
                         </button>
                         
+                        {/* Action Icons */}
                         <div className="flex gap-2">
-                          <button className="p-2 text-gray-400 hover:text-sky-500 hover:bg-sky-50 rounded-xl transition-all">
-                            <span>💬</span>
+                          <button 
+                            title="Add Comment"
+                            className="group/icon p-2 text-gray-400 hover:text-sky-500 hover:bg-sky-50 rounded-xl transition-all duration-300"
+                          >
+                            <span className="text-lg group-hover/icon:scale-110 transition-transform">💬</span>
                           </button>
-                          <button className="p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-50 rounded-xl transition-all">
-                            <span>📤</span>
+                          <button 
+                            title="Share Issue"
+                            className="group/icon p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-50 rounded-xl transition-all duration-300"
+                          >
+                            <span className="text-lg group-hover/icon:scale-110 transition-transform">📤</span>
+                          </button>
+                          <button 
+                            title="Bookmark"
+                            className="group/icon p-2 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-xl transition-all duration-300"
+                          >
+                            <span className="text-lg group-hover/icon:scale-110 transition-transform">⭐</span>
                           </button>
                         </div>
                       </div>
+
+                      {/* Progress Bar for In-Progress Issues */}
+                      {issue.status === 'in-progress' && (
+                        <div className="mt-4 pt-4 border-t border-orange-200">
+                          <div className="flex items-center justify-between text-xs text-orange-600 mb-2">
+                            <span>Progress</span>
+                            <span>65%</span>
+                          </div>
+                          <div className="w-full bg-orange-100 rounded-full h-2">
+                            <div className="bg-gradient-to-r from-orange-400 to-amber-400 h-2 rounded-full" style={{width: '65%'}}></div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Resolved Badge */}
+                      {issue.status === 'resolved' && (
+                        <div className="mt-4 pt-4 border-t border-green-200">
+                          <div className="flex items-center gap-2 text-sm text-green-600">
+                            <span className="flex items-center justify-center w-6 h-6 bg-green-100 rounded-full">✅</span>
+                            <span className="font-medium">Issue Resolved - Thank you for reporting!</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {filteredIssues.map((issue) => (
+                <div className="space-y-3">
+                  {filteredIssues.map((issue, index) => (
                     <div
                       key={issue.id}
-                      className="group bg-gray-50 rounded-xl p-4 border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all"
+                      className="group relative bg-gradient-to-r from-white via-gray-50/50 to-white rounded-xl p-4 border border-gray-200 hover:shadow-xl hover:border-sky-200 transition-all duration-300 hover:-translate-y-1"
+                      style={{ animationDelay: `${index * 50}ms` }}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-start gap-4">
-                            <div className="flex-1">
-                              <h4 className="font-bold text-gray-900 mb-1 group-hover:text-sky-600 transition-colors">
+                      {/* Priority Indicator Line */}
+                      <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-xl ${
+                        issue.priority === 'high' ? 'bg-gradient-to-b from-red-400 to-red-600' :
+                        issue.priority === 'medium' ? 'bg-gradient-to-b from-yellow-400 to-orange-500' : 
+                        'bg-gradient-to-b from-green-400 to-emerald-500'
+                      }`}></div>
+
+                      <div className="flex items-center justify-between ml-4">
+                        <div className="flex-1 flex items-center gap-4">
+                          {/* Issue Number */}
+                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-sky-100 to-blue-100 rounded-xl flex items-center justify-center border border-sky-200">
+                            <span className="text-sm font-bold text-sky-700">#{issue.id}</span>
+                          </div>
+                          
+                          {/* Main Content */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between mb-2">
+                              <h4 className="font-bold text-gray-900 text-lg group-hover:text-sky-600 transition-colors pr-4 line-clamp-1">
                                 {issue.title}
                               </h4>
-                              <p className="text-gray-600 text-sm mb-2">{issue.description}</p>
-                              <div className="flex items-center gap-4 text-xs text-gray-500">
-                                <span>📍 {issue.location}</span>
-                                <span>🏷️ {issue.category}</span>
-                                <span>👤 {issue.reporter}</span>
+                              
+                              {/* Status and Priority Badges */}
+                              <div className="flex items-center gap-2 flex-shrink-0">
+                                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold text-white ${
+                                  issue.statusColor === 'red' ? 'bg-gradient-to-r from-red-500 to-red-600' :
+                                  issue.statusColor === 'orange' ? 'bg-gradient-to-r from-orange-500 to-amber-500' :
+                                  issue.statusColor === 'green' ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
+                                  issue.statusColor === 'purple' ? 'bg-gradient-to-r from-purple-500 to-violet-500' : 
+                                  'bg-gradient-to-r from-blue-500 to-sky-500'
+                                }`}>
+                                  <span>{getStatusIcon(issue.status)}</span>
+                                  <span className="hidden sm:inline">{issue.status.replace('-', ' ').toUpperCase()}</span>
+                                </span>
+                                
+                                <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${getPriorityColor(issue.priority)}`}>
+                                  {issue.priority.toUpperCase()}
+                                </span>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <span className={`px-2 py-1 rounded text-xs font-semibold border ${getPriorityColor(issue.priority)}`}>
-                                {issue.priority}
+                            
+                            <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">{issue.description}</p>
+                            
+                            {/* Meta Information */}
+                            <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 mb-3">
+                              <span className="flex items-center gap-1">
+                                <span className="w-4 h-4 bg-sky-100 rounded-full flex items-center justify-center">📍</span>
+                                <span className="font-medium">{issue.location}</span>
                               </span>
-                              <span className={`px-2 py-1 rounded text-xs font-bold text-white ${
-                                issue.statusColor === 'red' ? 'bg-red-500' :
-                                issue.statusColor === 'orange' ? 'bg-orange-500' :
-                                issue.statusColor === 'green' ? 'bg-green-500' :
-                                issue.statusColor === 'purple' ? 'bg-purple-500' : 'bg-blue-500'
-                              }`}>
-                                {getStatusIcon(issue.status)}
+                              <span className="flex items-center gap-1">
+                                <span className="w-4 h-4 bg-purple-100 rounded-full flex items-center justify-center">🏷️</span>
+                                <span>{issue.category}</span>
                               </span>
-                              <button 
-                                onClick={() => handleUpvote(issue.id)}
-                                className="flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm"
-                              >
-                                👍 {issue.upvotes}
-                              </button>
+                              <span className="flex items-center gap-1">
+                                <span className="w-4 h-4 bg-orange-100 rounded-full flex items-center justify-center">👤</span>
+                                <span>By <strong>{issue.reporter}</strong></span>
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span className="w-4 h-4 bg-gray-100 rounded-full flex items-center justify-center">📅</span>
+                                <span>{new Date(issue.reportedDate).toLocaleDateString()}</span>
+                              </span>
                             </div>
+
+                            {/* Progress Bar for In-Progress Issues */}
+                            {issue.status === 'in-progress' && (
+                              <div className="mb-3">
+                                <div className="flex items-center justify-between text-xs text-orange-600 mb-1">
+                                  <span>Progress</span>
+                                  <span>65%</span>
+                                </div>
+                                <div className="w-full bg-orange-100 rounded-full h-1.5">
+                                  <div className="bg-gradient-to-r from-orange-400 to-amber-400 h-1.5 rounded-full" style={{width: '65%'}}></div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Action Buttons */}
+                        <div className="flex items-center gap-3 ml-4 flex-shrink-0">
+                          {/* Upvote Button */}
+                          <button 
+                            onClick={() => handleUpvote(issue.id)}
+                            className="group/btn flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-sky-50 to-blue-50 text-sky-600 border border-sky-200 rounded-lg hover:from-sky-100 hover:to-blue-100 hover:shadow-md transition-all duration-300 font-medium text-sm"
+                          >
+                            <span className="text-base group-hover/btn:scale-110 transition-transform">👍</span>
+                            <span className="font-bold">{issue.upvotes}</span>
+                          </button>
+                          
+                          {/* Quick Actions */}
+                          <div className="flex gap-1">
+                            <button 
+                              title="Add Comment"
+                              className="group/icon p-2 text-gray-400 hover:text-sky-500 hover:bg-sky-50 rounded-lg transition-all duration-300"
+                            >
+                              <span className="group-hover/icon:scale-110 transition-transform">💬</span>
+                            </button>
+                            <button 
+                              title="Share Issue"
+                              className="group/icon p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-50 rounded-lg transition-all duration-300"
+                            >
+                              <span className="group-hover/icon:scale-110 transition-transform">📤</span>
+                            </button>
                           </div>
                         </div>
                       </div>
+
+                      {/* Resolved Success Message */}
+                      {issue.status === 'resolved' && (
+                        <div className="mt-3 pt-3 border-t border-green-200 ml-4">
+                          <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 p-2 rounded-lg">
+                            <span>✅</span>
+                            <span className="font-medium">Issue Resolved - Thank you for your report!</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
