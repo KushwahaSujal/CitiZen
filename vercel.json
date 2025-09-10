@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "next.config.js", "use": "@vercel/next" }
-  ],
   "redirects": [
     { "source": "/index-backup", "destination": "/", "statusCode": 308 },
     { "source": "/legacy-index", "destination": "/", "statusCode": 308 }
