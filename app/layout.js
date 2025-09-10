@@ -1,0 +1,32 @@
+import './globals.css'
+import Providers from '../components/Providers'
+import SiteHeader from '../components/SiteHeader'
+import SiteFooter from '../components/SiteFooter'
+import SWRegister from '../components/SWRegister'
+
+export const metadata = {
+  title: 'CitiZen',
+  description: 'Bridging Citizens and Governments for Smarter Living',
+}
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png" />
+        <meta name="theme-color" content="#06b6d4" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+      </head>
+      <body className="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
+        <Providers>
+          <SiteHeader />
+          <main className="min-h-[70vh] w-full">{children}</main>
+          <SiteFooter />
+          <SWRegister />
+        </Providers>
+      </body>
+    </html>
+  )
+}
