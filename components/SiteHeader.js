@@ -8,6 +8,21 @@ export default function SiteHeader() {
   const [open, setOpen] = useState(false)
 
   const close = () => setOpen(false)
+  
+  const handleLogout = () => {
+    // Clear any stored auth data (localStorage, cookies, etc.)
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('authToken')
+      localStorage.removeItem('user')
+      // You can add more cleanup here as needed
+    }
+    
+    // Show confirmation
+    alert('Logged out successfully!')
+    
+    // Redirect to auth page
+    window.location.href = '/auth'
+  }
 
   return (
     <header className="bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 shadow-soft-lg relative">
@@ -34,6 +49,19 @@ export default function SiteHeader() {
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
+          <button
+            onClick={handleLogout}
+            className="ml-2 p-2 bg-white/20 text-white rounded-full hover:bg-white/30 transition-colors"
+            aria-label="Logout"
+            title="Logout"
+          >
+            {/* Logout icon */}
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16,17 21,12 16,7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </button>
         </nav>
 
         <div className="md:hidden flex items-center gap-3">
@@ -50,6 +78,20 @@ export default function SiteHeader() {
           </button>
 
           <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="p-2 bg-white/20 text-white rounded-md" aria-label="Toggle theme">{theme === 'dark' ? '☀️' : '🌙'}</button>
+          
+          <button
+            onClick={handleLogout}
+            className="p-2 bg-white/20 text-white rounded-md hover:bg-white/30 transition-colors"
+            aria-label="Logout"
+            title="Logout"
+          >
+            {/* Logout icon */}
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16,17 21,12 16,7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -63,6 +105,17 @@ export default function SiteHeader() {
             <Link href="/profile" className="text-gray-800 dark:text-gray-100" onClick={close}>Profile</Link>
             <Link href="/admin" className="text-gray-800 dark:text-gray-100" onClick={close}>Admin</Link>
             <Link href="/faq" className="text-gray-800 dark:text-gray-100" onClick={close}>Help</Link>
+            <button
+              onClick={() => { close(); handleLogout(); }}
+              className="flex items-center gap-2 text-gray-800 dark:text-gray-100 hover:text-red-600 dark:hover:text-red-400 text-left"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16,17 21,12 16,7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Logout
+            </button>
           </div>
         </div>
       )}
