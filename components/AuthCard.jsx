@@ -77,37 +77,37 @@ export default function AuthCard() {
       onSubmit={handleSignup}
       className="space-y-4"
     >
-      <h3 className="text-2xl font-bold text-black text-center">Create Account</h3>
-      <p className="text-sm text-gray-600 text-center">Join your community in making a difference</p>
+      <h3 className="text-xl sm:text-2xl font-bold text-black text-center">Create Account</h3>
+      <p className="text-xs sm:text-sm text-gray-600 text-center">Join your community in making a difference</p>
 
       <div className="grid grid-cols-1 gap-3">
-        <input name="fullName" required placeholder="Full name" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
-        <input name="email" type="email" required placeholder="Email" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
-        <input name="phone" placeholder="Phone" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
-        <div className="grid grid-cols-2 gap-3">
-          <input name="ward" placeholder="Ward no" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
-          <input name="pincode" placeholder="Pincode" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
+        <input name="fullName" required placeholder="Full name" className="w-full p-2.5 sm:p-3 text-sm sm:text-base rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
+        <input name="email" type="email" required placeholder="Email" className="w-full p-2.5 sm:p-3 text-sm sm:text-base rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
+        <input name="phone" placeholder="Phone" className="w-full p-2.5 sm:p-3 text-sm sm:text-base rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
+          <input name="ward" placeholder="Ward no" className="w-full p-2.5 sm:p-3 text-sm sm:text-base rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
+          <input name="pincode" placeholder="Pincode" className="w-full p-2.5 sm:p-3 text-sm sm:text-base rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
         </div>
-        <input name="municipality" placeholder="Municipality" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
-        <input name="password" type="password" required placeholder="Password" className="w-full p-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
+        <input name="municipality" placeholder="Municipality" className="w-full p-2.5 sm:p-3 text-sm sm:text-base rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
+        <input name="password" type="password" required placeholder="Password" className="w-full p-2.5 sm:p-3 text-sm sm:text-base rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-200" />
       </div>
 
       <button 
         type="submit" 
         disabled={isLoading}
-        className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-sky-400 to-teal-500 shadow disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-2.5 sm:py-3 text-sm sm:text-base rounded-md text-white font-medium bg-gradient-to-r from-sky-400 to-teal-500 shadow disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? 'Creating Account...' : 'Create account'}
       </button>
 
       {/* User Type Selection */}
-      <div className="mt-4 pt-4 border-t border-gray-200">
-        <p className="text-sm text-gray-600 text-center mb-3">Account Type</p>
-        <div className="flex items-center justify-center gap-4">
+      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200">
+        <p className="text-xs sm:text-sm text-gray-600 text-center mb-2 sm:mb-3">Account Type</p>
+        <div className="flex items-center justify-center gap-2 sm:gap-4">
           <button
             type="button"
             onClick={() => setUserType("user")}
-            className={`px-6 py-2 rounded-full font-medium transition-all ${
+            className={`px-3 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
               userType === "user" 
                 ? "bg-sky-100 text-sky-800 border-2 border-sky-300" 
                 : "bg-gray-100 text-gray-600 border-2 border-gray-200 hover:bg-gray-200"
@@ -118,7 +118,7 @@ export default function AuthCard() {
           <button
             type="button"
             onClick={() => setUserType("admin")}
-            className={`px-6 py-2 rounded-full font-medium transition-all ${
+            className={`px-3 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
               userType === "admin" 
                 ? "bg-purple-100 text-purple-800 border-2 border-purple-300" 
                 : "bg-gray-100 text-gray-600 border-2 border-gray-200 hover:bg-gray-200"
@@ -147,19 +147,19 @@ export default function AuthCard() {
       <button 
         type="submit" 
         disabled={isLoading}
-        className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-sky-400 to-teal-500 shadow disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-2.5 sm:py-3 text-sm sm:text-base rounded-md text-white font-medium bg-gradient-to-r from-sky-400 to-teal-500 shadow disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? 'Signing in...' : 'Sign in'}
       </button>
 
       {/* User Type Selection */}
-      <div className="mt-4 pt-4 border-t border-gray-200">
-        <p className="text-sm text-gray-600 text-center mb-3">Account Type</p>
-        <div className="flex items-center justify-center gap-4">
+      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200">
+        <p className="text-xs sm:text-sm text-gray-600 text-center mb-2 sm:mb-3">Account Type</p>
+        <div className="flex items-center justify-center gap-2 sm:gap-4">
           <button
             type="button"
             onClick={() => setUserType("user")}
-            className={`px-6 py-2 rounded-full font-medium transition-all ${
+            className={`px-3 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
               userType === "user" 
                 ? "bg-sky-100 text-sky-800 border-2 border-sky-300" 
                 : "bg-gray-100 text-gray-600 border-2 border-gray-200 hover:bg-gray-200"
@@ -170,7 +170,7 @@ export default function AuthCard() {
           <button
             type="button"
             onClick={() => setUserType("admin")}
-            className={`px-6 py-2 rounded-full font-medium transition-all ${
+            className={`px-3 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
               userType === "admin" 
                 ? "bg-purple-100 text-purple-800 border-2 border-purple-300" 
                 : "bg-gray-100 text-gray-600 border-2 border-gray-200 hover:bg-gray-200"
@@ -184,19 +184,24 @@ export default function AuthCard() {
   )
 
   return (
-    <div className="w-full max-w-xl">
-      <div className="rounded-2xl bg-white/95 border border-gray-100 shadow-lg p-8">
-        <div className="flex items-center justify-center gap-4 mb-6">
+    <div className="w-full max-w-md lg:max-w-xl">
+      <div className="rounded-2xl bg-white/95 border border-gray-100 shadow-lg p-4 sm:p-6 lg:p-8">
+        {/* Mobile-friendly tab buttons */}
+        <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
           <button
             onClick={() => setMode("signup")}
-            className={`px-4 py-2 rounded-full ${mode === "signup" ? "bg-sky-100 text-sky-800" : "text-gray-600"}`}
+            className={`px-3 sm:px-4 py-2 rounded-full text-sm sm:text-base font-medium transition-all ${
+              mode === "signup" ? "bg-sky-100 text-sky-800" : "text-gray-600 hover:bg-gray-100"
+            }`}
             aria-pressed={mode === "signup"}
           >
             Sign up
           </button>
           <button
             onClick={() => setMode("login")}
-            className={`px-4 py-2 rounded-full ${mode === "login" ? "bg-sky-100 text-sky-800" : "text-gray-600"}`}
+            className={`px-3 sm:px-4 py-2 rounded-full text-sm sm:text-base font-medium transition-all ${
+              mode === "login" ? "bg-sky-100 text-sky-800" : "text-gray-600 hover:bg-gray-100"
+            }`}
             aria-pressed={mode === "login"}
           >
             Log in
