@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 
 export default function AuthCard() {
   const [mode, setMode] = useState("signup") // 'signup' or 'login'
+  const [userType, setUserType] = useState("user") // 'user' or 'admin'
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -25,6 +26,7 @@ export default function AuthCard() {
         ward: userData.ward,
         pincode: userData.pincode,
         municipality: userData.municipality,
+        userType: userType,
         createdAt: new Date().toISOString(),
         isLoggedIn: true
       }))
@@ -56,6 +58,7 @@ export default function AuthCard() {
         ward: 'Ward 1',
         pincode: '110001',
         municipality: 'Demo City',
+        userType: userType,
         lastLogin: new Date().toISOString(),
         isLoggedIn: true
       }))
@@ -96,6 +99,35 @@ export default function AuthCard() {
       >
         {isLoading ? 'Creating Account...' : 'Create account'}
       </button>
+
+      {/* User Type Selection */}
+      <div className="mt-4 pt-4 border-t border-gray-200">
+        <p className="text-sm text-gray-600 text-center mb-3">Account Type</p>
+        <div className="flex items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={() => setUserType("user")}
+            className={`px-6 py-2 rounded-full font-medium transition-all ${
+              userType === "user" 
+                ? "bg-sky-100 text-sky-800 border-2 border-sky-300" 
+                : "bg-gray-100 text-gray-600 border-2 border-gray-200 hover:bg-gray-200"
+            }`}
+          >
+            👤 User
+          </button>
+          <button
+            type="button"
+            onClick={() => setUserType("admin")}
+            className={`px-6 py-2 rounded-full font-medium transition-all ${
+              userType === "admin" 
+                ? "bg-purple-100 text-purple-800 border-2 border-purple-300" 
+                : "bg-gray-100 text-gray-600 border-2 border-gray-200 hover:bg-gray-200"
+            }`}
+          >
+            🛡️ Admin
+          </button>
+        </div>
+      </div>
     </form>
   )
 
@@ -119,6 +151,35 @@ export default function AuthCard() {
       >
         {isLoading ? 'Signing in...' : 'Sign in'}
       </button>
+
+      {/* User Type Selection */}
+      <div className="mt-4 pt-4 border-t border-gray-200">
+        <p className="text-sm text-gray-600 text-center mb-3">Account Type</p>
+        <div className="flex items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={() => setUserType("user")}
+            className={`px-6 py-2 rounded-full font-medium transition-all ${
+              userType === "user" 
+                ? "bg-sky-100 text-sky-800 border-2 border-sky-300" 
+                : "bg-gray-100 text-gray-600 border-2 border-gray-200 hover:bg-gray-200"
+            }`}
+          >
+            👤 User
+          </button>
+          <button
+            type="button"
+            onClick={() => setUserType("admin")}
+            className={`px-6 py-2 rounded-full font-medium transition-all ${
+              userType === "admin" 
+                ? "bg-purple-100 text-purple-800 border-2 border-purple-300" 
+                : "bg-gray-100 text-gray-600 border-2 border-gray-200 hover:bg-gray-200"
+            }`}
+          >
+            🛡️ Admin
+          </button>
+        </div>
+      </div>
     </form>
   )
 
