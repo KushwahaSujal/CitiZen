@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useTheme } from './theme'
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function SiteHeader() {
   const { theme, setTheme } = useTheme()
@@ -24,6 +25,10 @@ export default function SiteHeader() {
     window.location.href = '/auth'
   }
 
+  const pathname = usePathname()
+  // Hide header on specific routes (welcome onboarding screen)
+  if (pathname === '/welcome') return null
+
   return (
     <header className="bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 shadow-soft-lg relative">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -35,12 +40,11 @@ export default function SiteHeader() {
           </div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
+  <nav className="hidden md:flex items-center gap-6">
           <Link href="/report" className="text-white hover:text-warning-200">Report</Link>
           <Link href="/issues" className="text-white hover:text-warning-200">Issues</Link>
           <Link href="/" className="text-white hover:text-warning-200">Home</Link>
           <Link href="/profile" className="text-white hover:text-warning-200">Profile</Link>
-          <Link href="/admin" className="text-white hover:text-warning-200">Admin</Link>
           <Link href="/faq" className="text-white hover:text-warning-200">Help</Link>
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -103,7 +107,6 @@ export default function SiteHeader() {
             <Link href="/issues" className="text-gray-800 dark:text-gray-100" onClick={close}>Issues</Link>
             <Link href="/" className="text-gray-800 dark:text-gray-100" onClick={close}>Home</Link>
             <Link href="/profile" className="text-gray-800 dark:text-gray-100" onClick={close}>Profile</Link>
-            <Link href="/admin" className="text-gray-800 dark:text-gray-100" onClick={close}>Admin</Link>
             <Link href="/faq" className="text-gray-800 dark:text-gray-100" onClick={close}>Help</Link>
             <button
               onClick={() => { close(); handleLogout(); }}

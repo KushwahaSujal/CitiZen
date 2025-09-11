@@ -36,7 +36,7 @@ export default function AuthCard() {
     setTimeout(() => {
       setIsLoading(false)
       alert(`Welcome ${userData.fullName}! Account created successfully.`)
-      router.push('/') // Redirect to home page
+  router.push('/home') // Redirect to home page after signup
     }, 1000)
   }
 
@@ -68,7 +68,7 @@ export default function AuthCard() {
     setTimeout(() => {
       setIsLoading(false)
       alert('Welcome back! Logged in successfully.')
-      router.push('/') // Redirect to home page
+  router.push('/home') // Redirect to home page after login
     }, 1000)
   }
 
