@@ -1,5 +1,8 @@
 "use client"
 import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart as faHeartSolid, faComment as faCommentSolid, faShare as faShareSolid, faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 export default function IssuesPage() {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -133,12 +136,10 @@ export default function IssuesPage() {
 
   return (
     <main className="min-h-screen bg-white text-gray-800">
-      {/* Mobile-first responsive layout */}
-      <div className="container mx-auto px-4 py-8 lg:py-16">
-        <div className="flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-12">
-          
-          {/* Main Content - Full width on mobile, main content on desktop */}
-          <div className="w-full lg:flex-1">
+      {/* Centered layout with side margins */}
+      <div className="max-w-7xl mx-auto px-4 py-8 lg:px-8">
+        {/* Content container with proper spacing */}
+        <div className="w-full max-w-none">
             {/* Header */}
             <div className="mb-8">
               <h1 className="text-2xl lg:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-teal-400 mb-4">
@@ -149,20 +150,22 @@ export default function IssuesPage() {
               </p>
             </div>
 
-            {/* Search and Filters Card */}
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 lg:p-8 mb-8">
-              {/* Search Bar */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">Search Issues</label>
+            {/* Enhanced Search and Filters Card */}
+            <div className="bg-gradient-to-r from-sky-50 via-white to-blue-50 rounded-3xl shadow-2xl border-2 border-sky-200 p-6 sm:p-8 lg:p-10 mb-8">
+              {/* Highlighted Search Bar */}
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-600 to-blue-600 mb-4">
+                  🔍 Search Community Issues
+                </h3>
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="Search by location, category, or description..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent text-sm pr-10"
+                    className="w-full p-4 text-lg border-2 border-sky-300 rounded-2xl focus:outline-none focus:ring-4 focus:ring-sky-200 focus:border-sky-500 shadow-lg bg-white pr-12"
                   />
-                  <span className="absolute right-3 top-3 text-gray-400">🔍</span>
+                  <span className="absolute right-4 top-4 text-2xl text-sky-500">🔍</span>
                 </div>
               </div>
 
@@ -256,67 +259,63 @@ export default function IssuesPage() {
               </div>
             )}
 
-            {/* Issues Display */}
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 lg:p-8">
-              {/* Enhanced Header with Stats */}
-              <div className="mb-8">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                  <div>
-                    <h3 className="text-2xl lg:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-teal-400">
-                      {filteredIssues.length} Issues Found
-                    </h3>
-                    <p className="text-gray-600 text-sm mt-1">
-                      Showing results for "{activeFilter === 'all' ? 'all categories' : activeFilter.replace('-', ' ')}"
-                      {searchQuery && ` matching "${searchQuery}"`}
-                    </p>
-                  </div>
+          {/* Enhanced Issues Feed - Social Media Style */}
+          <div className="max-w-6xl mx-auto">
+            {/* Community Feed Header with spacing */}
+            <div className="bg-gradient-to-r from-sky-50 via-white to-teal-50 rounded-3xl p-6 lg:p-8 mb-8 border border-sky-100 shadow-xl mx-4 lg:mx-0">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div className="flex-1">
+                  <h2 className="text-3xl lg:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-blue-600 to-teal-500 mb-4">
+                    🌟 Community Issues Feed
+                  </h2>
+                  <p className="text-lg text-gray-600 mb-4">
+                    Discover, engage, and make a difference in your community
+                  </p>
                   
-                  {/* Quick Stats */}
-                  <div className="flex gap-3">
-                    <div className="text-center p-2 bg-red-50 rounded-lg border border-red-200">
-                      <div className="text-sm font-bold text-red-600">
-                        {filteredIssues.filter(i => i.status === 'urgent').length}
-                      </div>
-                      <div className="text-xs text-red-700">Urgent</div>
+                  {/* Live Stats Bar */}
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-sky-200 shadow-sm">
+                      <span className="w-3 h-3 bg-gradient-to-r from-sky-400 to-blue-500 rounded-full animate-pulse"></span>
+                      <span className="text-sm font-semibold text-gray-700">{filteredIssues.length} Issues</span>
                     </div>
-                    <div className="text-center p-2 bg-orange-50 rounded-lg border border-orange-200">
-                      <div className="text-sm font-bold text-orange-600">
-                        {filteredIssues.filter(i => i.status === 'in-progress').length}
-                      </div>
-                      <div className="text-xs text-orange-700">Active</div>
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-green-200 shadow-sm">
+                      <span className="text-green-500">✅</span>
+                      <span className="text-sm font-semibold text-gray-700">{filteredIssues.filter(i => i.status === 'resolved').length} Resolved</span>
                     </div>
-                    <div className="text-center p-2 bg-green-50 rounded-lg border border-green-200">
-                      <div className="text-sm font-bold text-green-600">
-                        {filteredIssues.filter(i => i.status === 'resolved').length}
-                      </div>
-                      <div className="text-xs text-green-700">Resolved</div>
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-orange-200 shadow-sm">
+                      <span className="text-orange-500">⚡</span>
+                      <span className="text-sm font-semibold text-gray-700">{filteredIssues.filter(i => i.status === 'in-progress').length} Active</span>
                     </div>
                   </div>
                 </div>
                 
-                {/* Sorting Options */}
-                <div className="flex flex-wrap gap-2 items-center">
-                  <span className="text-sm font-medium text-gray-600">Sort by:</span>
-                  <button className="px-3 py-1 bg-sky-50 text-sky-600 rounded-lg text-sm font-medium border border-sky-200 hover:bg-sky-100 transition-colors">
-                    📅 Newest First
-                  </button>
-                  <button className="px-3 py-1 bg-gray-50 text-gray-600 rounded-lg text-sm font-medium border border-gray-200 hover:bg-gray-100 transition-colors">
-                    👍 Most Voted
-                  </button>
-                  <button className="px-3 py-1 bg-gray-50 text-gray-600 rounded-lg text-sm font-medium border border-gray-200 hover:bg-gray-100 transition-colors">
-                    🚨 Priority
-                  </button>
+                {/* Trending Topics */}
+                <div className="lg:w-80">
+                  <h4 className="text-sm font-bold text-gray-700 mb-3">🔥 Trending Categories</h4>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-3 py-1 bg-gradient-to-r from-orange-100 to-amber-100 text-orange-700 rounded-full text-xs font-medium border border-orange-200">
+                      Roads & Infrastructure
+                    </span>
+                    <span className="px-3 py-1 bg-gradient-to-r from-blue-100 to-sky-100 text-blue-700 rounded-full text-xs font-medium border border-blue-200">
+                      Public Safety
+                    </span>
+                    <span className="px-3 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full text-xs font-medium border border-green-200">
+                      Parks & Recreation
+                    </span>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              {viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredIssues.map((issue, index) => (
-                    <div
-                      key={issue.id}
-                      className="group relative bg-gradient-to-br from-white via-gray-50/30 to-white rounded-2xl p-6 border border-gray-200 hover:shadow-2xl hover:border-sky-200 transition-all duration-500 transform hover:-translate-y-2"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
+            {/* Social Media Style Grid */}
+            {viewMode === 'grid' ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+                {filteredIssues.map((issue, index) => (
+                  <div
+                    key={issue.id}
+                    className="group relative bg-white rounded-3xl border border-gray-200 hover:border-sky-300 transition-all duration-500 transform hover:-translate-y-3 hover:shadow-2xl overflow-hidden"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
                       {/* Priority Indicator */}
                       <div className={`absolute top-4 right-4 w-3 h-3 rounded-full ${
                         issue.priority === 'high' ? 'bg-red-400' :
@@ -328,27 +327,36 @@ export default function IssuesPage() {
                         <span className="text-xs font-bold text-sky-700">#{issue.id}</span>
                       </div>
 
-                      {/* Header Section */}
-                      <div className="mt-8 mb-4">
-                        <h4 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-sky-600 transition-colors leading-tight line-clamp-2">
+                      {/* Content Section - Properly Organized */}
+                      <div className="p-4 pb-16">
+                        <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 leading-tight">
                           {issue.title}
-                        </h4>
+                        </h3>
                         
-                        {/* Status and Priority Badges */}
-                        <div className="flex flex-wrap gap-2 mb-3">
-                          <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white shadow-md ${
-                            issue.statusColor === 'red' ? 'bg-gradient-to-r from-red-500 to-red-600' :
-                            issue.statusColor === 'orange' ? 'bg-gradient-to-r from-orange-500 to-amber-500' :
-                            issue.statusColor === 'green' ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
-                            issue.statusColor === 'purple' ? 'bg-gradient-to-r from-purple-500 to-violet-500' : 
-                            'bg-gradient-to-r from-blue-500 to-sky-500'
+                        {/* Description */}
+                        <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2">
+                          {issue.description}
+                        </p>
+
+                        {/* Status & Priority - Cleaner Design */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${
+                            issue.status === 'urgent' ? 'bg-red-100 text-red-700' :
+                            issue.status === 'in-progress' ? 'bg-orange-100 text-orange-700' :
+                            issue.status === 'resolved' ? 'bg-green-100 text-green-700' :
+                            issue.status === 'pending' ? 'bg-purple-100 text-purple-700' : 
+                            'bg-blue-100 text-blue-700'
                           }`}>
-                            <span>{getStatusIcon(issue.status)}</span>
-                            <span>{issue.status.replace('-', ' ').toUpperCase()}</span>
+                            {getStatusIcon(issue.status)}
+                            <span className="capitalize">{issue.status.replace('-', ' ')}</span>
                           </span>
                           
-                          <span className={`px-3 py-1 rounded-full text-xs font-semibold border-2 ${getPriorityColor(issue.priority)}`}>
-                            {issue.priority.toUpperCase()} PRIORITY
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${
+                            issue.priority === 'high' ? 'bg-red-50 text-red-600' :
+                            issue.priority === 'medium' ? 'bg-yellow-50 text-yellow-600' :
+                            'bg-green-50 text-green-600'
+                          }`}>
+                            {issue.priority}
                           </span>
                         </div>
 
@@ -380,40 +388,52 @@ export default function IssuesPage() {
                         </div>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                        {/* Upvote Button */}
+                    {/* Instagram-style Action Bar */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-white p-4 border-t border-gray-100">
+                      <div className="flex items-center justify-between">
+                        {/* Instagram-style Like Button */}
                         <button 
                           onClick={() => handleUpvote(issue.id)}
-                          className="group/btn flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sky-50 to-blue-50 text-sky-600 border border-sky-200 rounded-xl hover:from-sky-100 hover:to-blue-100 hover:shadow-md transition-all duration-300 font-medium text-sm"
+                          className="text-2xl hover:scale-110 transition-transform duration-200"
                         >
-                          <span className="text-lg group-hover/btn:scale-110 transition-transform">👍</span>
-                          <span className="font-bold">{issue.upvotes}</span>
-                          <span className="text-xs">votes</span>
+                          <FontAwesomeIcon icon={faHeartSolid} />
                         </button>
                         
-                        {/* Action Icons */}
-                        <div className="flex gap-2">
+                        {/* Social Action Buttons */}
+                        <div className="flex gap-3">
                           <button 
-                            title="Add Comment"
-                            className="group/icon p-2 text-gray-400 hover:text-sky-500 hover:bg-sky-50 rounded-xl transition-all duration-300"
+                            title="Comment"
+                            className="text-2xl hover:scale-110 transition-transform duration-200"
                           >
-                            <span className="text-lg group-hover/icon:scale-110 transition-transform">💬</span>
+                            <FontAwesomeIcon icon={faCommentSolid} />
                           </button>
+                          
                           <button 
-                            title="Share Issue"
-                            className="group/icon p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-50 rounded-xl transition-all duration-300"
+                            title="Share"
+                            className="text-2xl hover:scale-110 transition-transform duration-200"
                           >
-                            <span className="text-lg group-hover/icon:scale-110 transition-transform">📤</span>
+                            <FontAwesomeIcon icon={faShareSolid} />
                           </button>
+                          
                           <button 
                             title="Bookmark"
-                            className="group/icon p-2 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-xl transition-all duration-300"
+                            className="text-2xl hover:scale-110 transition-transform duration-200"
                           >
-                            <span className="text-lg group-hover/icon:scale-110 transition-transform">⭐</span>
+                            <FontAwesomeIcon icon={faBookmarkSolid} />
                           </button>
                         </div>
                       </div>
+                      
+                      {/* Instagram-style Like Count */}
+                      <div className="text-sm font-semibold text-gray-900 mb-1">
+                        {issue.upvotes} likes
+                      </div>
+                      
+                      {/* Simple Timestamp */}
+                      <div className="text-xs text-gray-400">
+                        {new Date(issue.reportedDate).toLocaleDateString()}
+                      </div>
+                    </div>
 
                       {/* Progress Bar for In-Progress Issues */}
                       {issue.status === 'in-progress' && (
@@ -576,79 +596,23 @@ export default function IssuesPage() {
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Side content - Hidden on mobile, visible on desktop */}
-          <aside className="hidden lg:block lg:flex-1 max-w-lg">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Quick Actions</h2>
-            <p className="text-gray-600 text-sm mb-6">Stay engaged with your community and help make a difference.</p>
-            
-            <div className="space-y-4 mb-8">
-              <div className="p-4 bg-sky-50 rounded-xl border border-sky-200">
-                <h3 className="font-semibold text-sky-800 text-sm mb-2">📝 Report New Issue</h3>
-                <p className="text-xs text-sky-600 mb-3">See something that needs attention? Report it to get it fixed.</p>
-                <a 
-                  href="/report"
-                  className="inline-block px-4 py-2 bg-sky-500 text-white text-sm font-medium rounded-lg hover:bg-sky-600 transition-colors"
-                >
-                  Create Report
-                </a>
-              </div>
-              
-              <div className="p-4 bg-teal-50 rounded-xl border border-teal-200">
-                <h3 className="font-semibold text-teal-800 text-sm mb-2">👥 Join Discussion</h3>
-                <p className="text-xs text-teal-600 mb-3">Engage with fellow community members about local issues.</p>
-                <button className="px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-600 transition-colors">
-                  View Forums
-                </button>
-              </div>
-              
-              <div className="p-4 bg-purple-50 rounded-xl border border-purple-200">
-                <h3 className="font-semibold text-purple-800 text-sm mb-2">📊 Track Progress</h3>
-                <p className="text-xs text-purple-600 mb-3">Monitor the status of issues you care about most.</p>
-                <button className="px-4 py-2 bg-purple-500 text-white text-sm font-medium rounded-lg hover:bg-purple-600 transition-colors">
-                  My Issues
-                </button>
-              </div>
+          
+          {/* Mobile footer with key actions */}
+          <div className="lg:hidden mt-8">
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <a 
+                href="/report"
+                className="p-3 bg-sky-50 rounded-lg text-center border border-sky-200 text-sky-700 font-medium text-sm hover:bg-sky-100 transition-colors"
+              >
+                📝 Report Issue
+              </a>
+              <button 
+                onClick={handleViewAnalytics}
+                className="p-3 bg-teal-50 rounded-lg text-center border border-teal-200 text-teal-700 font-medium text-sm hover:bg-teal-100 transition-colors"
+              >
+                📊 View Stats
+              </button>
             </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-1 gap-4 mb-6">
-              <div className="p-4 bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl border border-orange-200 text-center">
-                <div className="text-2xl font-bold text-orange-600">12</div>
-                <div className="text-xs text-orange-700">Issues Resolved This Week</div>
-              </div>
-              <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200 text-center">
-                <div className="text-2xl font-bold text-green-600">2.3h</div>
-                <div className="text-xs text-green-700">Average Response Time</div>
-              </div>
-            </div>
-
-            {/* Contact Info */}
-            <div className="p-4 bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl border border-gray-200">
-              <h3 className="font-semibold text-gray-800 text-sm mb-2">Need Help?</h3>
-              <p className="text-xs text-gray-600 mb-2">Contact our community support team:</p>
-              <div className="text-sm font-semibold text-gray-800">📞 +1 (555) 123-4567</div>
-              <div className="text-xs text-gray-500 mt-1">Available 24/7</div>
-            </div>
-          </aside>
-        </div>
-
-        {/* Mobile footer with key actions */}
-        <div className="lg:hidden mt-8">
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <a 
-              href="/report"
-              className="p-3 bg-sky-50 rounded-lg text-center border border-sky-200 text-sky-700 font-medium text-sm hover:bg-sky-100 transition-colors"
-            >
-              📝 Report Issue
-            </a>
-            <button 
-              onClick={handleViewAnalytics}
-              className="p-3 bg-teal-50 rounded-lg text-center border border-teal-200 text-teal-700 font-medium text-sm hover:bg-teal-100 transition-colors"
-            >
-              📊 View Stats
-            </button>
           </div>
         </div>
       </div>
